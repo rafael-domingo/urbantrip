@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Animated, TouchableOpacity, Easing } from 'react-native';
+import { View, StyleSheet, Text, Animated, TouchableOpacity, Easing, Dimensions } from 'react-native';
 
 import GlobalStyles from '../../util/GlobalStyles';
 
@@ -41,6 +41,14 @@ export default function PhoneLogin({handlePhoneInput}) {
 
     return (
         <View style={styles.container}>
+            <Text
+                    style={[
+                        GlobalStyles.text,
+                        styles.titleText
+                    ]}
+                >
+                    Enter your phone number
+                </Text>
             <View style={styles.subContainer}>
                 <PhoneInput
                     ref={phoneInputRef}
@@ -71,7 +79,7 @@ export default function PhoneLogin({handlePhoneInput}) {
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',                
         width: '100%'
     },
@@ -92,5 +100,12 @@ const styles = StyleSheet.create({
     text: {
         color: 'white', 
         fontSize: 24, 
+    },
+    titleText: {
+        textAlign: 'left', 
+        width: Dimensions.get('window').width*0.8, 
+        color: 'white', 
+        fontWeight: 'bold', 
+        fontSize: 20
     }
 })

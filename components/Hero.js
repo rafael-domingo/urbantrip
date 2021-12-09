@@ -123,12 +123,12 @@ export default function Hero({}) {
 const styles = StyleSheet.create({
     container: {         
         borderWidth: 1,                 
-        flex: 1,                
+        // flex: 1,                
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,
         alignItems: 'center',
         justifyContent: 'flex-end',
-        position: 'absolute',
+        position: 'relative',
         top: 0,
         zIndex: -1
     },
