@@ -6,16 +6,17 @@ import GlobalStyles from '../../util/GlobalStyles';
 import Hero from '../../components/Hero';
 import Login from './Login';
 import LoginLoading from './LoginLoading';
+import ErrorModal from '../../components/ErrorModal';
 
 
 
 export default function Welcome({}) {
     const [loading, setLoading] = React.useState(false);
-    const [newUser, setNewUser] = React.useState(false);
+    const [newUser, setNewUser] = React.useState(false);    
     const loginOpacity = React.useRef(new Animated.Value(1)).current;
     const loadingOpacity = React.useRef(new Animated.Value(0)).current;
     const duration = 1000;
-
+    
     React.useEffect(() => {
         if (loading) {
             Animated.timing(
@@ -40,7 +41,8 @@ export default function Welcome({}) {
                 ).start()
             })
         }       
-    }, [loading])
+    }, [loading]);
+
     return (
         <View
             style={styles.container}
@@ -80,7 +82,8 @@ export default function Welcome({}) {
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
+        alignItems: 'center',
         height: '100%',
         width: '100%'
     },

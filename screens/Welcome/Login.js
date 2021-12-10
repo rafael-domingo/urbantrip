@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text, Animated, Easing, Dimensions } from 'react-native';
+import ErrorModal from '../../components/ErrorModal';
+import { phoneAuth, verificationAuth } from '../../util/Authentication';
 
 import GlobalStyles from '../../util/GlobalStyles';
 
@@ -9,6 +11,9 @@ import VerificationInput from './VerificationInput';
 export default function Login({setNewUser, setLoading}) {
     const [showVerification, setShowVerification] = React.useState(false);
     const [verificationError, setVerificationError] = React.useState(false);
+    const [verificationId, setVerificationId] = React.useState('');
+    const [errorText, setErrorText] = React.useState('');
+    const [showError, setShowError] = React.useState(false);
     const phoneOpacity = React.useRef(new Animated.Value(0)).current;
     const verificationOpacity = React.useRef(new Animated.Value(0)).current;
     const duration = 500;
@@ -74,13 +79,35 @@ export default function Login({setNewUser, setLoading}) {
         }
     }, [showVerification])
 
-    const handlePhoneInput = (value) => {
-        setShowVerification(true)
+    const handlePhoneInput = (phoneNumber, recaptcha) => {                        
+        phoneAuth(phoneNumber, recaptcha)
+        .then(response => {          
+            if (response !== 'error') {                
+                setVerificationId(response);
+                setShowVerification(true);
+            }  else {
+                setErrorText('Something went wrong. Try again later.');
+                setShowError(true);
+            }                        
+        });
     };
 
     const handleVerificationInput = (code) => {
-        setLoading(true)
+        verificationAuth(code, verificationId)
+        .then(response => {
+            if (typeof(response) === 'string') {
+                setErrorText('That code is incorrect, try again.');
+                setShowError(true);
+                setVerificationError(true);
+            } else {
+                setLoading(true);
+            }            
+        });
     };
+
+    const handleErrorModal = () => {
+        setShowError(false);
+    };  
 
     return (
         <Animated.View
@@ -132,7 +159,12 @@ export default function Login({setNewUser, setLoading}) {
                         />
                     </Animated.View>
                 )
-            }            
+            }    
+            <ErrorModal
+                modalText={errorText}
+                showModal={showError}
+                handleConfirm={handleErrorModal}
+            />        
         </Animated.View>
     )
 }
