@@ -6,11 +6,8 @@ import GlobalStyles from '../../util/GlobalStyles';
 import Hero from '../../components/Hero';
 import Login from './Login';
 import LoginLoading from './LoginLoading';
-import ErrorModal from '../../components/ErrorModal';
 
-
-
-export default function Welcome({}) {
+export default function Welcome({navigation}) {
     const [loading, setLoading] = React.useState(false);
     const [newUser, setNewUser] = React.useState(false);    
     const loginOpacity = React.useRef(new Animated.Value(1)).current;
@@ -58,7 +55,11 @@ export default function Welcome({}) {
                             }
                         ]}
                     >
-                        <Login setNewUser={setNewUser} setLoading={setLoading}/>
+                        <Login 
+                            setNewUser={setNewUser} 
+                            setLoading={setLoading}
+                            navigation={navigation}
+                        />
                     </Animated.View>
                 )
             }
@@ -85,7 +86,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
-        width: '100%'
+        width: '100%',
+        backgroundColor: 'rgb(24, 28, 47)',
     },
     subContainer: {
         flex: 1

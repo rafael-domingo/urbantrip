@@ -8,7 +8,7 @@ import GlobalStyles from '../../util/GlobalStyles';
 import PhoneLogin from './PhoneLogin';
 import VerificationInput from './VerificationInput';
 
-export default function Login({setNewUser, setLoading}) {
+export default function Login({setNewUser, setLoading, navigation}) {
     const [showVerification, setShowVerification] = React.useState(false);
     const [verificationError, setVerificationError] = React.useState(false);
     const [verificationId, setVerificationId] = React.useState('');
@@ -101,6 +101,10 @@ export default function Login({setNewUser, setLoading}) {
                 setVerificationError(true);
             } else {
                 setLoading(true);
+                setTimeout(() => {
+                    navigation.navigate('Home');
+                }, 2000);
+                
             }            
         });
     };
