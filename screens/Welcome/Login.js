@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, StyleSheet, Text, Animated, Easing, Dimensions } from 'react-native';
+import { useDispatch } from 'react-redux';
 import ErrorModal from '../../components/ErrorModal';
 import { phoneAuth, verificationAuth } from '../../util/Authentication';
 import { getDocument } from '../../util/Firestore';
+import { setUserState } from '../../redux/user';
 
 import GlobalStyles from '../../util/GlobalStyles';
 
@@ -17,6 +19,8 @@ export default function Login({setNewUser, setLoading, navigation}) {
     const [showError, setShowError] = React.useState(false);
     const phoneOpacity = React.useRef(new Animated.Value(0)).current;
     const verificationOpacity = React.useRef(new Animated.Value(0)).current;
+    const dispatch = useDispatch();
+
     const duration = 500;
 
     React.useEffect(() => {
@@ -102,11 +106,25 @@ export default function Login({setNewUser, setLoading, navigation}) {
                 setVerificationError(true);
             } else {
                 setLoading(true);
+                // send user data to store
+                const userObject = {
+                    phoneNumber: response.user.phoneNumber, 
+                    uid: response.user.uid
+                };
                 // get user data if it exists
                 getDocument(response.user.uid).then(response => {
                     if (response === 'New user') {
-
+                        const userState = {
+                            user: userObject,
+                            tripList: []
+                        };
+                        dispatch(setUserState(userState));
                     } else {
+                        const userState = {
+                            user: userObject,
+                            tripList: response.tripList
+                        };
+                        dispatch(setUserState(userState));
 
                     }
                     setTimeout(() => {
