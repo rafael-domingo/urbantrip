@@ -26,6 +26,11 @@ export const getDocument = async (uid) => {
             throw 'New User';
         }        
     } catch(error) {
-        return error;
+        if (error === 'New User') {
+            return error;
+        } else {
+            return 'Error';
+        }
+        
     }
 }
