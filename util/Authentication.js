@@ -2,7 +2,7 @@ import {initializeApp} from 'firebase/app';
 import {getAuth, PhoneAuthProvider, signInWithCredential} from 'firebase/auth';
 
 const firebaseConfig = {
-//    firebaseConfig
+    //firebaseConfig
 };
 try {
     initializeApp(firebaseConfig);

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Text, Animated, Easing, Dimensions } from 'react-native';
 import ErrorModal from '../../components/ErrorModal';
 import { phoneAuth, verificationAuth } from '../../util/Authentication';
+import { getDocument } from '../../util/Firestore';
 
 import GlobalStyles from '../../util/GlobalStyles';
 
@@ -101,9 +102,18 @@ export default function Login({setNewUser, setLoading, navigation}) {
                 setVerificationError(true);
             } else {
                 setLoading(true);
-                setTimeout(() => {
-                    navigation.navigate('Home');
-                }, 2000);
+                // get user data if it exists
+                getDocument(response.user.uid).then(response => {
+                    if (response === 'New user') {
+
+                    } else {
+
+                    }
+                    setTimeout(() => {
+                        navigation.navigate('Home');
+                    }, 2000);
+                })                
+              
                 
             }            
         });
