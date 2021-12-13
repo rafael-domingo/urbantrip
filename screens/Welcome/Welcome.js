@@ -39,13 +39,13 @@ export default function Welcome({navigation}) {
                         setTimeout(() => {
                             navigation.navigate('Home');
                         }, 2000);
-                    } else {
+                    } else {                        
                         // send back to login screen if firestore error
                         setLoading(false);
                     };
                 });
             } else {
-                // no user authenticated
+                // no user authenticated                
                 setLoading(false);
             };
         });
@@ -75,6 +75,17 @@ export default function Welcome({navigation}) {
                     }
                 ).start()
             })
+        } else {
+            Animated.timing(
+                loginOpacity,
+                {
+                    toValue: 1,
+                    duration: duration, 
+                    delay: 0,
+                    easing: Easing.out(Easing.exp),
+                    useNativeDriver: true
+                }
+            ).start()
         }       
     }, [loading]);
 
@@ -121,13 +132,13 @@ export default function Welcome({navigation}) {
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         height: '100%',
         width: '100%',
         backgroundColor: 'rgb(24, 28, 47)',
     },
     subContainer: {
-        flex: 1
+        flex: 0.25
     }
 })

@@ -1,4 +1,4 @@
-import React from 'react';
+    import React from 'react';
 import { View, StyleSheet, Text, Animated, TouchableOpacity, Easing, Dimensions } from 'react-native';
 
 import GlobalStyles from '../../util/GlobalStyles';
@@ -11,7 +11,7 @@ export default function PhoneLogin({handlePhoneInput}) {
     const phoneInputRef = React.useRef(null);
     const [value, setValue] = React.useState("");
     const [formattedValue, setFormattedValue] = React.useState("");    
-    const opacity = React.useRef(new Animated.Value(0)).current;
+    const opacity = React.useRef(new Animated.Value(0)).current; 
     const recaptchaRef = React.useRef(null);
     const firebaseConfig = {
         apiKey: "AIzaSyAxcJj0TolkzAhY0cT-a6ejr8dJs3QGKb8",
@@ -22,6 +22,7 @@ export default function PhoneLogin({handlePhoneInput}) {
         appId: "1:428911834730:web:7118039ec38bec96f13c13",
         measurementId: "G-3XYYPWL3W1"
     };
+
       
     React.useEffect(() => {
         const isValid = phoneInputRef.current?.isValidNumber(value);        
@@ -96,23 +97,23 @@ export default function PhoneLogin({handlePhoneInput}) {
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',                
-        width: '100%',        
+        width: '100%',              
     },
     subContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',               
     }, 
     phoneContainer: {
         backgroundColor:'rgba(255,255,255,0)', 
-        borderRadius: 20, 
+        borderRadius: 20,         
         justifyContent: 'center', 
-        alignItems: 'center'
+        alignItems: 'center',        
     },
     phoneTextContainer: {
-        backgroundColor: 'rgba(0,0,0,0)'
+        backgroundColor: 'rgba(0,0,0,0)',
     },
     text: {
         color: 'white', 
@@ -123,6 +124,6 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width*0.8, 
         color: 'white', 
         fontWeight: 'bold', 
-        fontSize: 20
+        fontSize: 20,        
     }
 })

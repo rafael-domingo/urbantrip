@@ -1,16 +1,20 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import MapCard from './MapCard';
 
 export default function MapList({}) {
     return (
-        <ScrollView>
-            
-        </ScrollView>
+        <View
+            style={styles.container}
+        >
+            <MapCard/>
+        </View>
+       
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-
+        flex: 1
     }
 })
