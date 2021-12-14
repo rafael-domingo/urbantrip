@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Dimensions } fr
 
 import GlobalStyles from '../../util/GlobalStyles';
 import Map from './Map';
+import TripCarousel from './TripCarousel';
 
 export default function Trip({route, navigation}) {
     const {trip} = route.params;    
@@ -22,6 +23,9 @@ export default function Trip({route, navigation}) {
                     <Text>Back</Text>
                 </TouchableOpacity>
                 <Text>Trip View</Text>
+                <TripCarousel
+                    trip={trip}
+                />
             </SafeAreaView>
         </View>
       
