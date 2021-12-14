@@ -11,8 +11,8 @@ import MapList from './MapList';
 
 export default function Home({}) {
     const userState = useSelector(state => state.user);
-    const [sortedCityList, setSortedCityList]  = React.useState();
-    const [listView, setListView] = React.useState(true);
+    const [sortedCityList, setSortedCityList]  = React.useState([]);
+    const [listView, setListView] = React.useState(false);
 
     React.useEffect(() => {
         const cityList = sortTrips(userState.tripList);
@@ -25,14 +25,14 @@ export default function Home({}) {
         >
             <Header/>
             {
-                listView && (
+                listView && sortedCityList.length > 0 && (
                     <List
                         sortedCityList={sortedCityList}
                     />
                 )
             }
             {
-                !listView && (
+                !listView && sortedCityList.length > 0 && (
                     <MapList
                         sortedCityList={sortedCityList}
                     />
