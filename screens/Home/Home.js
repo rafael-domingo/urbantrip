@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import GlobalStyles from '../../util/GlobalStyles';
@@ -20,7 +20,7 @@ export default function Home({}) {
     }, [userState])
 
     return (
-        <View
+        <SafeAreaView
             style={styles.container}
         >
             <Header/>
@@ -42,16 +42,16 @@ export default function Home({}) {
                 listView={listView}
                 setListView={setListView}
             />
-        </View>
+        </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
-        width: '100%',
+        width: '100%',        
         backgroundColor: 'rgb(24, 28, 47)',
     }  
 })

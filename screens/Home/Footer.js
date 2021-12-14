@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         justifyContent: 'space-between',
-        marginBottom: 20,
-        marginTop: 20
+        alignItems: 'center',         
+        flex: 0.5,
     },
     button: {
         marginLeft: 30, 

@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         alignItems: 'center',
-        flex: 1
+        flex: 10
     },
     sectionList: {
         width: '100%',
