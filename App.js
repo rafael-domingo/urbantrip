@@ -11,6 +11,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import Trip from './screens/Trip/Trip';
 
 export default function App() {
 
@@ -42,6 +43,10 @@ export default function App() {
                   animation: 'fade',
                   gestureEnabled: false
                 }}
+              />
+              <Stack.Screen
+                name='Trip'
+                component={Trip}
               />
             </Stack.Group>
           </Stack.Navigator>

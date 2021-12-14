@@ -9,7 +9,7 @@ import Header from './Header';
 import List from './List';
 import MapList from './MapList';
 
-export default function Home({}) {
+export default function Home({navigation}) {
     const userState = useSelector(state => state.user);
     const [sortedCityList, setSortedCityList]  = React.useState([]);
     const [listView, setListView] = React.useState(false);
@@ -28,6 +28,7 @@ export default function Home({}) {
                 listView && sortedCityList.length > 0 && (
                     <List
                         sortedCityList={sortedCityList}
+                        navigation={navigation}
                     />
                 )
             }
@@ -35,6 +36,7 @@ export default function Home({}) {
                 !listView && sortedCityList.length > 0 && (
                     <MapList
                         sortedCityList={sortedCityList}
+                        navigation={navigation}
                     />
                 )
             }

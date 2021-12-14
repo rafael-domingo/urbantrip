@@ -7,7 +7,7 @@ import MapView from 'react-native-maps';
 import MapCardList from './MapCardList';
 
 
-export default function MapCard({location}) {
+export default function MapCard({location, navigation}) {
     const [detailView, setDetailView] = React.useState(false);
     
     return (
@@ -53,6 +53,7 @@ export default function MapCard({location}) {
                     <MapCardList
                         tripList={location.data}
                         setDetailView={setDetailView}
+                        navigation={navigation}
                     />
                 )
             }

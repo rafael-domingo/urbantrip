@@ -6,7 +6,7 @@ import GlobalStyles from '../../util/GlobalStyles';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { Feather } from '@expo/vector-icons'; 
 
-export default function MapCardList({tripList, setDetailView}) {    
+export default function MapCardList({tripList, setDetailView, navigation}) {    
     const [editMode, setEditMode] = React.useState(false);
     const opacityDelete = React.useRef(new Animated.Value(0)).current;
     const duration = 1000;
@@ -88,7 +88,16 @@ export default function MapCardList({tripList, setDetailView}) {
                             key={item.tripId}
                         >
                             <TouchableOpacity
-                                style={styles.button}                                
+                                style={styles.button}     
+                                onPress={() => {
+                                    navigation.navigate(
+                                        'Trip',
+                                        {
+                                            trip: item
+                                        }
+
+                                    )
+                                }}                           
                             >
                                 <Text
                                     style={[

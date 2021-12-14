@@ -8,7 +8,7 @@ import Carousel from 'react-native-snap-carousel';
 import { Pagination } from 'react-native-snap-carousel';
 
 
-export default function MapList({sortedCityList}) {
+export default function MapList({sortedCityList, navigation}) {
     const [activeIndex, setActiveIndex] = React.useState(0);
 
     const renderItem = ({item, index}) => {
@@ -18,6 +18,7 @@ export default function MapList({sortedCityList}) {
             >
                 <MapCard
                     location={item}
+                    navigation={navigation}
                 />
             </View>
         )
