@@ -1,24 +1,123 @@
 import React from 'react';
-import { View, StyleSheet, Text, Dimensions } from 'react-native';
+import { ImageBackground, Animated, View, StyleSheet, Text, Dimensions, Easing } from 'react-native';
 
 import GlobalStyles from '../../util/GlobalStyles';
 
 import { Modalize } from 'react-native-modalize';
 
-export default function TripCard({location}) {
-    
+const modalHeight = Dimensions.get('window').height*0.8
+const closedModalHeight = Dimensions.get('window').height*0.4
+export default function TripCard({index, location, currentIndex, handleModal, openIndex, setOpenIndex}) {
+    const [open, setOpen] = React.useState(false);
+    const opacity = React.useRef(new Animated.Value(1)).current;
+
+    React.useEffect(() => {
+        if (openIndex) { 
+            if (index !== currentIndex) {
+                Animated.timing(
+                    opacity,
+                    {
+                        toValue: 0,
+                        duration: 250,
+                        delay: 0,
+                        easing: Easing.out(Easing.exp),
+                        useNativeDriver: true
+                    }
+                ).start();
+            } else {
+                Animated.timing(
+                    opacity,
+                    {
+                        toValue: 1,
+                        duration: 250,
+                        delay: 0,
+                        easing: Easing.out(Easing.exp),
+                        useNativeDriver: true
+                    }
+                ).start();
+            }            
+        } else {
+            Animated.timing(
+                opacity,
+                {
+                    toValue: 1,
+                    duration: 250,
+                    delay: 0,
+                    easing: Easing.out(Easing.exp),
+                    useNativeDriver: true
+                }
+            ).start();
+        }
+    }, [index, currentIndex, openIndex])
+
     return (
-        <Modalize
-            modalHeight={Dimensions.get('window').height}
-            alwaysOpen={300}
+        <Animated.View
+            style={{       
+                opacity: opacity,         
+                flex: 1
+            }}
         >
-            <Text>
-                {location.name}
-            </Text>
-        </Modalize>
+            <Modalize
+                style={styles.modal}
+                modalHeight={modalHeight}
+                alwaysOpen={closedModalHeight}
+                withOverlay={false}
+                onPositionChange={(position) => {
+                    if (position === 'top') {
+                        handleModal('open');  
+                        setOpen(true);      
+                        setOpenIndex(true);                  
+                    } else {
+                        handleModal('close');                                            
+                        setOpen(false);
+                        setOpenIndex(false);
+                    }
+                }}
+            >
+                <View
+                    style={styles.modalContent}
+                >
+                    <ImageBackground
+                        style={styles.image}
+                        source={{uri: location.image_url}}
+                        resizeMode='cover'            
+                    >
+                        <Text
+                            style={[
+                                GlobalStyles.text,
+                                styles.name
+                            ]}
+                        >
+                            {location.name}
+                        </Text>
+                    </ImageBackground>
+                </View>
+              
+                
+            </Modalize>
+        </Animated.View>
+        
     )
 }
 
 const styles = StyleSheet.create({
-
+    modal: {
+        flex: 1,        
+    },  
+    modalContent: {
+        borderRadius: 10, 
+        overflow: 'hidden',
+        height: modalHeight,        
+    },
+    name: {
+        fontWeight: 'bold',
+        fontSize: 30
+    },  
+    image: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        width: '100%',     
+        height: modalHeight * 0.5          
+    },  
 })
