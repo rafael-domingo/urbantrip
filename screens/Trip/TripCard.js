@@ -6,7 +6,7 @@ import GlobalStyles from '../../util/GlobalStyles';
 import { Modalize } from 'react-native-modalize';
 
 const modalHeight = Dimensions.get('window').height*0.8
-const closedModalHeight = Dimensions.get('window').height*0.4
+const closedModalHeight = Dimensions.get('window').height*0.6
 export default function TripCard({index, location, currentIndex, handleModal, openIndex, setOpenIndex}) {
     const [open, setOpen] = React.useState(false);
     const opacity = React.useRef(new Animated.Value(1)).current;

@@ -12,7 +12,7 @@ export default function Map({trip}) {
         >
             <MapView
                 style={styles.map}
-                scrollEnabled={false}
+                scrollEnabled={false}                              
                 camera={{
                     center: {
                         latitude: trip.coordinates.lat,
@@ -32,7 +32,10 @@ export default function Map({trip}) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, 
+        flex: 1,
+        position: 'absolute',
+        top: 0, 
+        left: 0,
     },
     map: {
         justifyContent: 'center',
@@ -41,8 +44,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         flex: 1,
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
-        position: 'absolute',
+        height: Dimensions.get('window').height,        
         zIndex: -1
     }
 })  

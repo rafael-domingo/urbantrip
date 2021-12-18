@@ -8,13 +8,14 @@ import TripCard from './TripCard';
 const cardWidth = Dimensions.get('window').width*0.8;
 const cardMargin = 5;
 
-export default function TripCarousel({trip}) {
+export default function TripCarousel({trip, setShowHeader}) {
     const scale = React.useRef(new Animated.Value(1)).current;
     const [currentIndex, setCurrentIndex] = React.useState(0);
     const [openIndex, setOpenIndex] = React.useState(false);
 
     const handleModal = (position) => {
         if (position === 'open') {
+            setShowHeader(false);
             Animated.timing(
                 scale,
                 {
@@ -26,6 +27,7 @@ export default function TripCarousel({trip}) {
                 }
             ).start()
         } else {
+            setShowHeader(true);
             Animated.timing(
                 scale,
                 {
@@ -102,7 +104,7 @@ export default function TripCarousel({trip}) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,                      
+        flex: 1,                             
     }, 
     cardContainer: {                
         width: cardWidth,
