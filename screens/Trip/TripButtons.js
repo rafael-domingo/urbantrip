@@ -108,7 +108,7 @@ export default function TripButtons({showButtons}) {
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        top:'15%',
+        top:100,
         zIndex: 15,                
         width: '100%',            
     },

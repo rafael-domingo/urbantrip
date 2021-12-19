@@ -57,9 +57,10 @@ export default function TripHeader({trip, navigation, setShowButtons, showButton
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        top: 0,
+        top: '2%',
         zIndex: 15,
-        height: '15%',
+        minHeight: 100,
+        maxHeight: '15%',
         alignItems: 'center',
         justifyContent: 'flex-end',
         width: '100%',        

@@ -1,16 +1,43 @@
 import React from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, Animated, Easing } from 'react-native';
 import MapView from 'react-native-maps';
 
 import GlobalStyles from '../../util/GlobalStyles';
+import Markers from './Markers';
 
-export default function Map({trip}) {
+export default function Map({trip, markerRef, mapRef, fitMarkers}) {
+    const translation = React.useRef(new Animated.Value(0)).current;
+
+    React.useEffect(() => {
+        Animated.timing(
+            translation,
+            {
+                toValue: -200,
+                duration: 250,
+                delay: 2000,
+                easing: Easing.inOut(Easing.exp),
+                useNativeDriver: true
+            }
+        ).start();
+    })
+
+    React.useEffect(() => {
+        fitMarkers();
+    }, [trip.trip.destinations]);
 
     return (
-        <View
-            style={styles.container}
+        <Animated.View
+            style={[
+                styles.container,
+                {
+                    transform: [{
+                        translateY: translation
+                    }]
+                }
+            ]}
         >
             <MapView
+                ref={mapRef}
                 style={styles.map}
                 scrollEnabled={false}                              
                 camera={{
@@ -25,8 +52,18 @@ export default function Map({trip}) {
                 }}
                 zoomTapEnabled={false}
                 zoomEnabled={false}
-            />
-        </View>
+                mapType={'mutedStandard'}
+                mapPadding={{
+                    bottom: Dimensions.get('window').height*0.5*0.33,
+                    top: 50                    
+                }}
+            >
+                <Markers
+                    trip={trip}
+                    markerRef={markerRef}
+                />
+            </MapView>
+        </Animated.View>
     )
 }
 

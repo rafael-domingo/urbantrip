@@ -8,9 +8,8 @@ import TripCard from './TripCard';
 const cardWidth = Dimensions.get('window').width*0.8;
 const cardMargin = 5;
 
-export default function TripCarousel({trip, setShowHeader}) {
-    const scale = React.useRef(new Animated.Value(1)).current;
-    const [currentIndex, setCurrentIndex] = React.useState(0);
+export default function TripCarousel({trip, setShowHeader, modalRef, currentIndex, setCurrentIndex, mapRef, fitMarkers}) {
+    const scale = React.useRef(new Animated.Value(1)).current;    
     const [openIndex, setOpenIndex] = React.useState(false);
 
     const handleModal = (position) => {
@@ -21,7 +20,7 @@ export default function TripCarousel({trip, setShowHeader}) {
                 {
                     toValue: 1.25,
                     duration: 250,
-                    delay: 250,
+                    delay: 0,
                     easing: Easing.out(Easing.exp),
                     useNativeDriver: false
                 }
@@ -33,7 +32,7 @@ export default function TripCarousel({trip, setShowHeader}) {
                 {
                     toValue: 1,
                     duration: 250,
-                    delay: 250,
+                    delay: 0,
                     easing: Easing.out(Easing.exp),
                     useNativeDriver: false
                 }
@@ -60,7 +59,7 @@ export default function TripCarousel({trip, setShowHeader}) {
             snapToAlignment='center'
             decelerationRate={'fast'}
             scrollEventThrottle={1}
-            showsHorizontalScrollIndicator={true}
+            showsHorizontalScrollIndicator={false}
             contentInset={{
                 top: 0,
                 left: (Dimensions.get('window').width - cardWidth) / 2 + cardMargin,
@@ -68,6 +67,15 @@ export default function TripCarousel({trip, setShowHeader}) {
                 right: (Dimensions.get('window').width - cardWidth) / 2 + cardMargin
             }} 
             onScroll={(e) => getIndex(e)}
+            onScrollEndDrag={() => {
+                setTimeout(() => {
+                    modalRef.current?.forEach(element => {
+                        element?.close('alwaysOpen')
+                    });  
+                }, 500);
+      
+
+            }}
         >
             {
                 trip.trip.destinations.map((item, index) => {
@@ -92,6 +100,9 @@ export default function TripCarousel({trip, setShowHeader}) {
                                     handleModal={handleModal}
                                     openIndex={openIndex}
                                     setOpenIndex={setOpenIndex}
+                                    modalRef={modalRef}
+                                    mapRef={mapRef}
+                                    fitMarkers={fitMarkers}
                                 /> 
                             </Animated.View>                           
                         )                        
@@ -104,7 +115,7 @@ export default function TripCarousel({trip, setShowHeader}) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,                             
+        flex: 1,                                     
     }, 
     cardContainer: {                
         width: cardWidth,

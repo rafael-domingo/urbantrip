@@ -5,9 +5,10 @@ import GlobalStyles from '../../util/GlobalStyles';
 
 import { Modalize } from 'react-native-modalize';
 
-const modalHeight = Dimensions.get('window').height*0.8
-const closedModalHeight = Dimensions.get('window').height*0.6
-export default function TripCard({index, location, currentIndex, handleModal, openIndex, setOpenIndex}) {
+const modalHeight = Dimensions.get('window').height*0.8;
+const closedModalHeight = Dimensions.get('window').height*0.5;
+
+export default function TripCard({index, location, currentIndex, handleModal, openIndex, setOpenIndex, modalRef, mapRef, fitMarkers}) {
     const [open, setOpen] = React.useState(false);
     const opacity = React.useRef(new Animated.Value(1)).current;
 
@@ -58,6 +59,7 @@ export default function TripCard({index, location, currentIndex, handleModal, op
             }}
         >
             <Modalize
+                ref={el => modalRef.current[index] = el}
                 style={styles.modal}
                 modalHeight={modalHeight}
                 alwaysOpen={closedModalHeight}
@@ -66,11 +68,24 @@ export default function TripCard({index, location, currentIndex, handleModal, op
                     if (position === 'top') {
                         handleModal('open');  
                         setOpen(true);      
-                        setOpenIndex(true);                  
+                        setOpenIndex(true);                             
+                        mapRef.current.animateCamera(
+                            {
+                                center: {
+                                    latitude: location.coordinates.latitude,
+                                    longitude: location.coordinates.longitude
+                                },
+                                pitch: 0,
+                                heading: 0,
+                                altitude: 800,
+                            },
+                            { duration: 500}
+                        );             
                     } else {
                         handleModal('close');                                            
                         setOpen(false);
                         setOpenIndex(false);
+                        fitMarkers();
                     }
                 }}
             >
@@ -118,6 +133,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
         width: '100%',     
-        height: modalHeight * 0.5          
+        height: modalHeight * 0.33          
     },  
 })

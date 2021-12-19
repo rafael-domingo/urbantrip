@@ -1,7 +1,8 @@
 import React from 'react';
-import { Animated, Easing, StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native';
+import { Animated, Easing, StyleSheet, View, Dimensions } from 'react-native';
 
 import GlobalStyles from '../../util/GlobalStyles';
+
 import Map from './Map';
 import TripButtons from './TripButtons';
 import TripCarousel from './TripCarousel';
@@ -11,7 +12,12 @@ export default function Trip({route, navigation}) {
     const {trip} = route.params;    
     const [showButtons, setShowButtons] = React.useState(false);
     const [showHeader, setShowHeader] = React.useState(true);
+    const [currentIndex, setCurrentIndex] = React.useState(0);
     const translateHeader = React.useRef(new Animated.Value(0)).current;
+    const markerRef = React.useRef([]);
+    const mapRef = React.useRef(null);
+    const modalRef = React.useRef([]);
+
     React.useEffect(() => {
         if (showHeader) {
             Animated.timing(
@@ -36,8 +42,22 @@ export default function Trip({route, navigation}) {
                 }
             ).start()
         }
-    }, [showHeader])
+    }, [showHeader]);
 
+    React.useEffect(() => {
+        markerRef.current[currentIndex]?.showCallout()
+    }, [currentIndex]);
+
+    const fitMarkers = () => {
+        const markersArray = [];
+        trip.trip.destinations.map((item, index) => {
+            for (var key in item) {
+                markersArray.push(item[key].id);
+            }
+        });
+        mapRef.current.fitToSuppliedMarkers(markersArray);
+    }
+    
     return (
         <View
             style={styles.container}
@@ -66,20 +86,19 @@ export default function Trip({route, navigation}) {
           
             <Map
                 trip={trip}
-            />
-            <SafeAreaView
-                style={[
-                    styles.safeAreaContainer,
-                    {
-                        height: showHeader ? '75%' : '100%' // workaround for zIndex issue with header
-                    }
-                ]}
-            >                                                       
-                <TripCarousel
+                markerRef={markerRef}
+                mapRef={mapRef}
+                fitMarkers={fitMarkers}
+            />           
+            <TripCarousel
                     trip={trip}
                     setShowHeader={setShowHeader}
+                    modalRef={modalRef}
+                    currentIndex={currentIndex}
+                    setCurrentIndex={setCurrentIndex}
+                    mapRef={mapRef}
+                    fitMarkers={fitMarkers}
                 />
-            </SafeAreaView>
         </View>
       
     )
@@ -93,15 +112,10 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center' 
     },  
-    headerContainer: {
-        height: '25%', 
+    headerContainer: {        
+        maxHeight: '25%',
         width: '100%',              
         // zIndex: 15,      
-        flex: 1 ,        
+        flex: 1 ,                
     },
-    safeAreaContainer: {
-        zIndex: 15,        
-        position: 'absolute',
-        bottom: 0,            
-    }
 })
