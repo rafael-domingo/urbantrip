@@ -46,7 +46,7 @@ export default function Trip({route, navigation}) {
 
     React.useEffect(() => {
         markerRef.current[currentIndex]?.showCallout()
-    }, [currentIndex]);
+    }, [currentIndex]); 
 
     const fitMarkers = () => {
         const markersArray = [];
@@ -89,6 +89,7 @@ export default function Trip({route, navigation}) {
                 markerRef={markerRef}
                 mapRef={mapRef}
                 fitMarkers={fitMarkers}
+                showHeader={showHeader}
             />           
             <TripCarousel
                     trip={trip}

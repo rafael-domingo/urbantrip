@@ -5,21 +5,35 @@ import MapView from 'react-native-maps';
 import GlobalStyles from '../../util/GlobalStyles';
 import Markers from './Markers';
 
-export default function Map({trip, markerRef, mapRef, fitMarkers}) {
+export default function Map({trip, markerRef, mapRef, fitMarkers, showHeader}) {
     const translation = React.useRef(new Animated.Value(0)).current;
 
     React.useEffect(() => {
-        Animated.timing(
-            translation,
-            {
-                toValue: -200,
-                duration: 250,
-                delay: 2000,
-                easing: Easing.inOut(Easing.exp),
-                useNativeDriver: true
-            }
-        ).start();
-    })
+        if (showHeader) {
+            Animated.timing(
+                translation,
+                {
+                    toValue: 0,
+                    duration: 250,
+                    delay: 0,
+                    easing: Easing.inOut(Easing.exp),
+                    useNativeDriver: true
+                }
+            ).start();
+        } else {
+            Animated.timing(
+                translation,
+                {
+                    toValue: -200,
+                    duration: 250,
+                    delay: 0,
+                    easing: Easing.inOut(Easing.exp),
+                    useNativeDriver: true
+                }
+            ).start();
+        }
+       
+    }, [showHeader])
 
     React.useEffect(() => {
         fitMarkers();
