@@ -4,13 +4,19 @@ import { ImageBackground, Animated, View, StyleSheet, Text, Dimensions, Easing }
 import GlobalStyles from '../../util/GlobalStyles';
 
 import { Modalize } from 'react-native-modalize';
+import { Yelp } from '../../util/Yelp';
+import Reviews from './Reviews';
+import { ScrollView } from 'react-native-gesture-handler';
+import Categories from './Categories';
+import Hours from './Hours';
 
-const modalHeight = Dimensions.get('window').height*0.8;
-const closedModalHeight = Dimensions.get('window').height*0.5;
+const modalHeight = Dimensions.get('window').height*0.75;
+const closedModalHeight = modalHeight*0.2;
 
 export default function TripCard({index, location, currentIndex, handleModal, openIndex, setOpenIndex, modalRef, mapRef, fitMarkers}) {
     const [open, setOpen] = React.useState(false);
     const opacity = React.useRef(new Animated.Value(1)).current;
+    const [detail, setDetail] = React.useState();
 
     React.useEffect(() => {
         if (openIndex) { 
@@ -51,6 +57,13 @@ export default function TripCard({index, location, currentIndex, handleModal, op
         }
     }, [index, currentIndex, openIndex])
 
+    const getDetail = () => {
+        // console.log(location)
+        Yelp.detail(location.id).then(response => {
+            console.log(response);
+            setDetail(response);
+        })
+    }
     return (
         <Animated.View
             style={{       
@@ -63,7 +76,10 @@ export default function TripCard({index, location, currentIndex, handleModal, op
                 style={styles.modal}
                 modalHeight={modalHeight}
                 alwaysOpen={closedModalHeight}
-                withOverlay={false}
+                withOverlay={false}       
+                scrollViewProps={{
+                    scrollEnabled: false
+                }}
                 onPositionChange={(position) => {
                     if (position === 'top') {
                         handleModal('open');  
@@ -81,17 +97,22 @@ export default function TripCard({index, location, currentIndex, handleModal, op
                             },
                             { duration: 500}
                         );             
+                        getDetail();      
                     } else {
                         handleModal('close');                                            
                         setOpen(false);
                         setOpenIndex(false);
                         fitMarkers();
+                        setDetail(undefined);
                     }
                 }}
             >
                 <View
-                    style={styles.modalContent}
-                >
+                    style={[
+                        styles.modalContent,
+                        GlobalStyles.backgroundColor
+                    ]}
+                >                    
                     <ImageBackground
                         style={styles.image}
                         source={{uri: location.image_url}}
@@ -105,9 +126,36 @@ export default function TripCard({index, location, currentIndex, handleModal, op
                         >
                             {location.name}
                         </Text>
-                    </ImageBackground>
+                        {
+                        detail !== undefined && (
+                        <Text>{detail.detail.display_phone}</Text>
+                        )
+                    }    
+                      
+                    </ImageBackground>                   
+                    <ScrollView style={styles.subContainer}>
+                    
+                        {
+                            detail !== undefined && (
+                                <>
+                                <Categories
+                                    detail={detail}
+                                />
+                                <Hours
+                                    detail={detail}
+                                />
+                                <Reviews
+                                    detail={detail}
+                                />
+                                </>
+                            )
+                        }    
+                             
+                    </ScrollView>
+                            
+                                      
                 </View>
-              
+                            
                 
             </Modalize>
         </Animated.View>
@@ -116,23 +164,31 @@ export default function TripCard({index, location, currentIndex, handleModal, op
 }
 
 const styles = StyleSheet.create({
-    modal: {
-        flex: 1,        
+    modal: {        
+        flex: 1,    
+        height: modalHeight,             
     },  
     modalContent: {
         borderRadius: 10, 
-        overflow: 'hidden',
-        height: modalHeight,        
+        overflow: 'hidden',                
+        justifyContent: 'flex-start',            
+        alignItems: 'center',
+        height: '100%'          
     },
     name: {
         fontWeight: 'bold',
-        fontSize: 30
+        fontSize: 30,
+        color: 'white'
     },  
     image: {
-        flex: 1,
+        // flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
         width: '100%',     
-        height: modalHeight * 0.33          
+        height: modalHeight * 0.25          
     },  
+    subContainer: {                      
+        height: modalHeight * 0.75,     
+        // padding: 10               
+    }
 })

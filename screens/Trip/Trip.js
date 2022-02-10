@@ -114,9 +114,9 @@ const styles = StyleSheet.create({
         alignItems: 'center' 
     },  
     headerContainer: {        
-        maxHeight: '25%',
+        // maxHeight: '25%',
         width: '100%',              
         // zIndex: 15,      
-        flex: 1 ,                
+        flex: 0.2,                
     },
 })

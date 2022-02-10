@@ -18,13 +18,13 @@ export default function TripCarousel({trip, setShowHeader, modalRef, currentInde
             Animated.timing(
                 scale,
                 {
-                    toValue: 1.25,
+                    toValue: 1.1,
                     duration: 250,
                     delay: 0,
                     easing: Easing.out(Easing.exp),
                     useNativeDriver: false
                 }
-            ).start()
+            ).start()            
         } else {
             setShowHeader(true);
             Animated.timing(
@@ -37,7 +37,7 @@ export default function TripCarousel({trip, setShowHeader, modalRef, currentInde
                     useNativeDriver: false
                 }
             ).start()
-        }
+        }        
     }    
 
     const getIndex = (event) => {
@@ -115,11 +115,11 @@ export default function TripCarousel({trip, setShowHeader, modalRef, currentInde
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,                                     
+        flex: 1,                                             
     }, 
     cardContainer: {                
         width: cardWidth,
-        height: Dimensions.get('window').height,
-        margin: cardMargin,                
+        height: Dimensions.get('window').height*0.8,        
+        margin: cardMargin,                         
     }
 })
